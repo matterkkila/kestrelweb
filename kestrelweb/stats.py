@@ -12,4 +12,7 @@ def get(servers):
     jobs = [gevent.spawn(worker, server) for server in servers]
     gevent.joinall(jobs)
 
-    return dict([job.value for job in jobs])
+    results = [job.value for job in jobs if job.value is not None]
+    if len(results):
+        return dict(results)
+    return None

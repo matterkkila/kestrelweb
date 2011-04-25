@@ -1,13 +1,16 @@
 
 
+import os
+
 import dream
 import pystache
 
 
-prefix = '/Users/merkkila/source/kestrelui'
+prefix = os.path.normpath('%s/../..' % (os.path.realpath(__file__)))
 
-def render(template_file, data=None, **kwargs):
-    return dream.Response(body=pystache.render(template(template_file), data), **kwargs)
+
+def render(template_file, data=None):
+    return pystache.render(template(template_file), data)
 
 def static(filepath):
     return readfile('/static/%s' % filepath)
