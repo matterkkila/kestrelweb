@@ -10,11 +10,102 @@
     <![endif]-->
 </head>
 <body>
+
 <input type="hidden" name="servers" id="servers" value="127.0.0.1:22133">
 <input type="hidden" name="refresh" id="refresh" value="10000">
+
 <div id="content"></div>
 
+<script id="tmpl_content" type="text/html">
+<div id="servers">
+  <table>
+    <thead>
+      <tr>
+        <th title="the server host:port">server</th>
+        <th title="version string, like 1.2">version</th>
+        <th title="seconds the server has been online">uptime</th>
+        <th title="current time in unix epoch">time</th>
+        <th title="current open connections from clients">current connections</th>
+        <th title="total connections that have been opened in this server's lifetime">total connections</th>
+        <th title="total of items waiting in all queues">current items</th>
+        <th title="total of items that have ever been added in this server's lifetime">total items</th>
+        <th title="total SET requests">set</th>
+        <th title="total GET requests">get</th>
+        <th title="total GET/peek requests">peek</th>
+        <th title="total GET requests that received an item">hits</th>
+        <th title="total GET requests on an empty queue">misses</th>
+        <th title="total bytes read from clients">read</th>
+        <th title="total bytes written to clients">write</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#servers}}
+    <tr>
+      <td>{{server}}{{^server}}-{{/server}}</td>
+      {{#stats}}
+      <td>{{version}}{{^version}}-{{/version}}</td>
+      <td>{{uptime}}{{^uptime}}-{{/uptime}}</td>
+      <td>{{time}}{{^time}}-{{/time}}</td>
+      <td>{{curr_connections}}</td>
+      <td>{{total_connections}}</td>
+      <td>{{curr_items}}</td>
+      <td>{{total_items}}</td>
+      <td>{{cmd_set}}</td>
+      <td>{{cmd_get}}</td>
+      <td>{{cmd_peek}}</td>
+      <td>{{get_hits}}</td>
+      <td>{{get_misses}}</td>
+      <td>{{bytes_read}}</td>
+      <td>{{bytes_written}}</td>
+      {{/stats}}
+    </tr>
+    {{/servers}}
+    </tbody>
+  </table>
+</div>
+
+<div id="queues">
+  <table>
+    <thead>
+      <tr>
+        <th title="the server">server</th>
+        <th title="the queue name">queue</th>
+        <th title="byte size of the queue's journal file">logsize</th>
+        <th title="total items that have been added to this queue in this server's lifetime">total items</th>
+        <th title="total items that have been expired from this queue in this server's lifetime">expired items</th>
+        <th title="items waiting in this queue">items</th>
+        <th title="items in this queue that are currently in memory">items (mem)</th>
+        <th title="total byte size of items waiting in this queue">size</th>
+        <th title="total byte size of items in this queue that are currently in memory (will always be less than or equal to max_memory_size config for the queue)">size (mem)</th>
+        <th title="time, in milliseconds, that the last item to be fetched from this queue had been waiting; that is, the time between SET and GET; if the queue is empty, this will always be zero">age</th>
+        <th title="number of clients waiting for an item from this queue (using GET/t)">waiters</th>
+        <th title="items read with /open but not yet confirmed">open transactions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#queues}}
+      <tr>
+        <td>{{server}}</td>
+        <td>{{queue}}</td>
+        <td>{{logsize}}</td>
+        <td>{{total_items}}</td>
+        <td>{{expired_items}}</td>
+        <td>{{items}}</td>
+        <td>{{mem_items}}</td>
+        <td>{{bytes}}</td>
+        <td>{{mem_bytes}}</td>
+        <td>{{age}}</td>
+        <td>{{waiters}}</td>
+        <td>{{open_transactions}}</td>
+      </tr>
+      {{/queues}}
+    </tbody>
+  </table>
+</div>
+</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/mustache.js" type="text/javascript"></script>
 <script src="/static/js/lib.js" type="text/javascript"></script>
 </body>
 </html>

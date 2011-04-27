@@ -28,7 +28,7 @@ def static(request, filepath):
 
 @App.expose('/')
 def home(request):
-    return dream.Response(body=util.render('index.html', {}), content_type='text/html')
+    return dream.Response(body=util.template('index.html'), content_type='text/html')
 
 @App.expose('/ajax/stats.json')
 def ajax_stats(request):
@@ -53,6 +53,4 @@ def ajax_stats(request):
             data['servers'].sort(cmp=lambda x,y: cmp(x['server'].lower(), y['server'].lower()))
             data['queues'].sort(cmp=lambda x,y: cmp('%s.%s' % (x['server'].lower(), x['queue'].lower()), '%s.%s' % (y['server'].lower(), y['queue'].lower())))
 
-    return dream.JSONPResponse(callback=callback, body={
-        'content': util.render('servers.html', data),
-    })
+    return dream.JSONPResponse(callback=callback, body=data)

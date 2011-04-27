@@ -27,12 +27,12 @@ var get_stats = function() {
       servers: $('#servers').val()
     },
     success: function(data, textStatus, jqXHR) {
-        $('#content').html(data.content);
+        $('#content').html(mustache.tmpl_content(data));
     }
   });
 };
 
 $(document).ready(function() {
   get_stats();
-  refresh = setInterval(get_stats, parseInt($('#refresh').val()));
+  setInterval(get_stats, parseInt($('#refresh').val()));
 });
