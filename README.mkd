@@ -1,1 +1,66 @@
+kestrelweb
+==========
+
 A kestrel web ui.
+
+Uses gunicorn + gevent for front end serving.  Also uses gevent to make async requests to the kestrel servers for stats.  It's still in early development so actual production deployment isn't supported yet.
+
+https://github.com/matterkkila/kestrelweb
+
+
+Dependencies:
+
+ * gevent
+ * gunicorn
+ * pykestrel
+ * dream - https://github.com/matterkkila/dream
+
+Note: All are available on pypi except for the dream library.
+
+
+Prerequisites
+-------------
+
+ * Python 2.7+
+ * virtualenv (not really required, but it's a good idea)
+
+
+Installing
+----------
+
+    git clone https://matterkkila@github.com/matterkkila/kestrelweb.git
+    cd kestrelweb
+    virtualenv --no-site-packages .
+    . bin/activate
+    pip install gevent
+    pip install gunicorn
+    pip install pykestrel
+    pip install https://github.com/matterkkila/dream/tarball/master
+    python ./setup.py develop
+
+
+Configuring
+-----------
+
+Edit the templates/index.html and change the server input to point to your kestrel servers.
+
+Format: server:port,server:port,...
+
+
+Running
+-------
+
+    gunicorn -k gevent -w 2 kestrelweb.main:App
+
+
+Filtering
+---------
+
+You can filter the queue list on any field.
+
+Example:
+
+ * queue=my_queue - Will filter the queues by name that start with my_queue
+ * server=10.0.10 - Will filter the queues by servers that start with 10.0.10
+
+Note: The filter is passed directly to the python re.match() function, so more complex patterns are supported.
