@@ -8,8 +8,12 @@ import stats
 import util
 
 
-App = dream.App()
+try:
+    import local_settings
+except ImportError:
+    pass
 
+App = dream.App()
 
 QUEUE_SORT = {
     'server': lambda x: x['server'].lower(),
@@ -80,27 +84,11 @@ def queue_filter(pattern, queue, qstats):
 
     return True
 
-@App.expose('/static/<filepath:.*>')
-def static(request, filepath):
-    body = ''
-    content_type = 'test/plain'
-
-    try:
-        body = util.static(filepath)
-        if filepath.endswith('.css'):
-            content_type = 'text/css'
-        elif filepath.endswith('.js'):
-            content_type = 'text/javascript'
-        elif filepath.endswith('.html'):
-            content_type = 'text/html'
-    except:
-        pass
-
-    return dream.Response(body=body, content_type=content_type)
 
 @App.expose('/')
 def home(request):
     return dream.Response(body=util.template('index.html'), content_type='text/html')
+
 
 @App.expose('/ajax/action.json')
 def ajax_action(request):
@@ -121,6 +109,7 @@ def ajax_action(request):
         data['error'] = 'Invalid action'
 
     return dream.JSONPResponse(callback=callback, body=data)
+
 
 @App.expose('/ajax/stats.json')
 def ajax_stats(request):
@@ -150,3 +139,22 @@ def ajax_stats(request):
             data['queues'].sort(key=QUEUE_SORT[qsort] if qsort in QUEUE_SORT else QUEUE_SORT['name'], reverse=qreverse)
 
     return dream.JSONPResponse(callback=callback, body=data)
+
+
+@App.expose('/static/<filepath:.*>')
+def static(request, filepath):
+    body = ''
+    content_type = 'test/plain'
+
+    try:
+        body = util.static(filepath)
+        if filepath.endswith('.css'):
+            content_type = 'text/css'
+        elif filepath.endswith('.js'):
+            content_type = 'text/javascript'
+        elif filepath.endswith('.html'):
+            content_type = 'text/html'
+    except:
+        pass
+
+    return dream.Response(body=body, content_type=content_type)
