@@ -24,15 +24,32 @@ var get_stats = function() {
     url: '/ajax/stats.json',
     dataType: 'jsonp',
     data: {
-      servers: $('#servers').val()
+      servers: $('#servers').val(),
+      qsort: $('#qsort option:selected').val(),
+      qreverse: $('#qreverse option:selected').val(),
+      qfilter: $('#qfilter').val(),
     },
     success: function(data, textStatus, jqXHR) {
         $('#content').html(mustache.tmpl_content(data));
-    }
+        $('#error_count').html(0);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        $('#error_count').html(parseInt($('#error_count').html()) + 1);
+    },
   });
 };
 
 $(document).ready(function() {
   get_stats();
-  setInterval(get_stats, parseInt($('#refresh').val()));
+  var refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+
+  $('#btn_refresh').click(function () {
+    if ($(this).val() == 'Stop') {
+        clearInterval(refresh_int);
+        $(this).val('Start');
+    } else if ($(this).val() == 'Start') {
+        refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+        $(this).val('Stop');
+    }
+  });
 });

@@ -1,5 +1,7 @@
 
 
+import re
+
 import dream
 
 import stats
@@ -7,6 +9,41 @@ import util
 
 
 App = dream.App()
+
+
+QUEUE_SORT = {
+    'server': lambda x: x['server'].lower(),
+    'name': lambda x: x['queue'].lower(),
+    'items': lambda x: x['items'],
+    'bytes': lambda x: x['bytes'],
+    'total_items': lambda x: x['total_items'],
+    'logsize': lambda x: x['logsize'],
+    'expired_items': lambda x: x['expired_items'],
+    'mem_items': lambda x: x['mem_items'],
+    'mem_bytes': lambda x: x['mem_bytes'],
+    'age': lambda x: x['age'],
+    'discarded': lambda x: x['discarded'],
+    'waiters': lambda x: x['waiters'],
+    'open_transactions': lambda x: x['open_transactions'],
+}
+
+def queue_filter(pattern, queue, qstats):
+    """A filter to restrict queues"""
+    try:
+        if (pattern is not None) and isinstance(pattern, (str, unicode)) and (len(pattern) > 0):
+            (field, regex) = pattern.split('=', 1)
+            value = None
+            if field == 'queue':
+                value = queue
+            elif field in qstats:
+                value = qstats[field]
+            if re.match(regex, value, re.I):
+                return True
+            return False
+    except:
+        pass
+
+    return True
 
 @App.expose('/static/<filepath:.*>')
 def static(request, filepath):
@@ -34,6 +71,9 @@ def home(request):
 def ajax_stats(request):
     callback = request.str_params['callback'] if 'callback' in request.str_params else None
     servers = request.str_params['servers'] if 'servers' in request.str_params else None
+    qsort = request.str_params['qsort'] if 'qsort' in request.str_params else None
+    qreverse = int(request.str_params['qreverse']) if 'qreverse' in request.str_params else 0
+    qfilter = request.str_params['qfilter'] if 'qfilter' in request.str_params else None
 
     data = {}
     if servers:
@@ -48,9 +88,10 @@ def ajax_stats(request):
 
             for server, _data in _stats.iteritems():
                 data['servers'].append({'server': server, 'stats': _data['server']})
-                data['queues'].extend([dict(server=server, queue=queue, **qstats) for queue, qstats in _data['queues'].iteritems()])
+                data['queues'].extend([dict(server=server, queue=queue, **qstats) for queue, qstats in _data['queues'].iteritems() if queue_filter(qfilter, queue, qstats)])
 
             data['servers'].sort(cmp=lambda x,y: cmp(x['server'].lower(), y['server'].lower()))
-            data['queues'].sort(cmp=lambda x,y: cmp('%s.%s' % (x['server'].lower(), x['queue'].lower()), '%s.%s' % (y['server'].lower(), y['queue'].lower())))
+            data['queues'].sort(key=QUEUE_SORT['server'])
+            data['queues'].sort(key=QUEUE_SORT[qsort] if qsort in QUEUE_SORT else QUEUE_SORT['name'], reverse=qreverse)
 
     return dream.JSONPResponse(callback=callback, body=data)

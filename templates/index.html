@@ -11,9 +11,34 @@
 </head>
 <body>
 
-<input type="hidden" name="servers" id="servers" value="127.0.0.1:22133">
-<input type="hidden" name="refresh" id="refresh" value="10000">
-
+<label for="servers">Servers:</label>
+<input type="text" name="servers" id="servers" value="127.0.0.1:22133">
+<label for="refresh">Refresh:</label>
+<input type="text" name="refresh" id="refresh" value="5">
+<input type="button" name="btn_refresh" id="btn_refresh" value="Stop">
+<label for="qsort">Sort:</label>
+<select id="qsort" name="qsort">
+  <option value="queue">queue</option>
+  <option value="server">server</option>
+  <option value="logsize">logsize</option>
+  <option value="total_items">total items</option>
+  <option value="expired_items">expired items</option>
+  <option value="items">items</option>
+  <option value="mem_items">items (mem)</option>
+  <option value="size">size</option>
+  <option value="mem_size">size (mem)</option>
+  <option value="age">age</option>
+  <option value="waiters">waiters</option>
+  <option value="open_transactions">open transactions</option>
+</select>
+<label for="qreverse">Reverse:</label>
+<select id="qreverse" name="qreverse">
+  <option value="0">No</option>
+  <option value="1">Yes</option>
+</select>
+<label for="qfilter">Filter:</label>
+<input type="text" id="qfilter" name="qfilter" value="">
+<span id="error">Error: <span id="error_count">0</span></span>
 <div id="content"></div>
 
 <script id="tmpl_content" type="text/html">
@@ -68,8 +93,8 @@
   <table>
     <thead>
       <tr>
-        <th title="the server">server</th>
         <th title="the queue name">queue</th>
+        <th title="the server">server</th>
         <th title="byte size of the queue's journal file">logsize</th>
         <th title="total items that have been added to this queue in this server's lifetime">total items</th>
         <th title="total items that have been expired from this queue in this server's lifetime">expired items</th>
@@ -85,8 +110,8 @@
     <tbody>
       {{#queues}}
       <tr>
-        <td>{{server}}</td>
         <td>{{queue}}</td>
+        <td>{{server}}</td>
         <td>{{logsize}}</td>
         <td>{{total_items}}</td>
         <td>{{expired_items}}</td>
@@ -104,7 +129,7 @@
 </div>
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
 <script src="/static/js/mustache.js" type="text/javascript"></script>
 <script src="/static/js/lib.js" type="text/javascript"></script>
 </body>
