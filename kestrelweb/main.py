@@ -27,18 +27,53 @@ QUEUE_SORT = {
     'open_transactions': lambda x: x['open_transactions'],
 }
 
+FILTER_COMP = {
+    '=': lambda x, y: x == y,
+    '>': lambda x, y: x > y,
+    '<': lambda x, y: x < y,
+    '>=': lambda x, y: x >= y,
+    '<=': lambda x, y: x <= y,
+    '!=': lambda x, y: x != y,
+}
+
 def queue_filter(pattern, queue, qstats):
     """A filter to restrict queues"""
     try:
         if (pattern is not None) and isinstance(pattern, (str, unicode)) and (len(pattern) > 0):
-            (field, regex) = pattern.split('=', 1)
+            _m = re.match('(.*?)(>=|<=|!=|=|<|>)(.*)', pattern)
+            if not _m:
+                return True
+
+            (field, comp, filter_value) = _m.groups()
+
             value = None
             if field == 'queue':
                 value = queue
             elif field in qstats:
                 value = qstats[field]
-            if re.match(regex, value, re.I):
-                return True
+            else:
+                raise Exception('Unknown field')
+
+            if comp not in FILTER_COMP:
+                raise Exception('Unknown comparitor')
+
+            if isinstance(value, (int, long, float)):
+                if FILTER_COMP[comp](value, float(filter_value)):
+                    return True
+            elif isinstance(value, (str, unicode)):
+                if comp not in ['!=', '=']:
+                    raise Exception('Invalid comparitor')
+
+                qmatch = re.match(filter_value, value, re.I)
+                if qmatch and (comp == '='):
+                    return True
+                elif not qmatch and (comp == '!='):
+                    return True
+
+                return False
+            else:
+                raise Exception('Unknown type')
+
             return False
     except:
         pass

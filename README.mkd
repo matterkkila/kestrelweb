@@ -56,11 +56,12 @@ Running
 Filtering
 ---------
 
-You can filter the queue list on any field.
+You can filter the queue list on any field/value.  Strings only support the '=' and '!=' comparisons and use the re.match() function.  Numeric types support <, >, <=, >=, !=, = and will do the standard numeric comparison.
 
-Example:
+Examples:
 
- * queue=my_queue - Will filter the queues by name that start with my_queue
- * server=10.0.10 - Will filter the queues by servers that start with 10.0.10
-
-Note: The filter is passed directly to the python re.match() function, so more complex patterns are supported.
+ * queue=my_queue
+ * queue=.*_prod$
+ * server=10.0.10
+ * total_items>=10
+ * mem_items<=1024
