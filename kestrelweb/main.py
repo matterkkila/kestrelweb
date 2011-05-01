@@ -102,6 +102,26 @@ def static(request, filepath):
 def home(request):
     return dream.Response(body=util.template('index.html'), content_type='text/html')
 
+@App.expose('/ajax/action.json')
+def ajax_action(request):
+    callback = request.str_params['callback'] if 'callback' in request.str_params else None
+    server = request.str_params['server'] if 'server' in request.str_params else None
+    queue = request.str_params['queue'] if 'queue' in request.str_params else None
+    action = request.str_params['action'] if 'action' in request.str_params else None
+
+    data = {'success': True}
+
+    if action in ['flush', 'delete']:
+        if action == 'flush':
+            stats.flush([server], queue)
+        elif action == 'delete':
+            stats.delete([server], queue)
+    else:
+        data['success'] = False
+        data['error'] = 'Invalid action'
+
+    return dream.JSONPResponse(callback=callback, body=data)
+
 @App.expose('/ajax/stats.json')
 def ajax_stats(request):
     callback = request.str_params['callback'] if 'callback' in request.str_params else None

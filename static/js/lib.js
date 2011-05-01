@@ -40,16 +40,43 @@ var get_stats = function() {
 };
 
 $(document).ready(function() {
-  get_stats();
-  var refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+    get_stats();
+    var refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
 
-  $('#btn_refresh').click(function () {
-    if ($(this).val() == 'Stop') {
-        clearInterval(refresh_int);
-        $(this).val('Start');
-    } else if ($(this).val() == 'Start') {
-        refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
-        $(this).val('Stop');
-    }
-  });
+    $('#btn_refresh').click(function () {
+        if ($(this).val() == 'Stop') {
+            clearInterval(refresh_int);
+            $(this).val('Start');
+        } else if ($(this).val() == 'Start') {
+            refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+            $(this).val('Stop');
+        }
+    });
+
+    $('a.cmd').live('click', function() {
+        var row = $(this).closest('tr');
+        var action = $(this).attr('x-kestrel-action');
+        var queue = row.attr('x-kestrel-queue');
+        var server = row.attr('x-kestrel-server');
+        if (confirm(action + ' ' + server + ':' + queue)) {
+            $.ajax({
+                url: '/ajax/action.json',
+                dataType: 'jsonp',
+                data: {
+                    action: action,
+                    server: server,
+                    queue: queue,
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if (action == 'delete') {
+                        row.hide();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('An error occurred');
+                }
+            });
+        }
+        return false;
+    });
 });

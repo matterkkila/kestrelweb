@@ -105,11 +105,12 @@
         <th title="time, in milliseconds, that the last item to be fetched from this queue had been waiting; that is, the time between SET and GET; if the queue is empty, this will always be zero">age</th>
         <th title="number of clients waiting for an item from this queue (using GET/t)">waiters</th>
         <th title="items read with /open but not yet confirmed">open transactions</th>
+        <th>commands</th>
       </tr>
     </thead>
     <tbody>
       {{#queues}}
-      <tr>
+      <tr id="{{server}}.{{queue}}" x-kestrel-server="{{server}}" x-kestrel-queue="{{queue}}">
         <td>{{queue}}</td>
         <td>{{server}}</td>
         <td>{{logsize}}</td>
@@ -122,6 +123,7 @@
         <td>{{age}}</td>
         <td>{{waiters}}</td>
         <td>{{open_transactions}}</td>
+        <td><a href="" class="cmd" x-kestrel-action="flush">flush</a> | <a href="" class="cmd" x-kestrel-action="delete">delete</a></td>
       </tr>
       {{/queues}}
     </tbody>
