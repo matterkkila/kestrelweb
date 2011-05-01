@@ -10,39 +10,46 @@
     <![endif]-->
 </head>
 <body>
+    <label for="servers">Servers:</label>
+    <input type="text" name="servers" id="servers" value="127.0.0.1:22133">
 
-<label for="servers">Servers:</label>
-<input type="text" name="servers" id="servers" value="127.0.0.1:22133">
-<label for="refresh">Refresh:</label>
-<input type="text" name="refresh" id="refresh" value="5">
-<input type="button" name="btn_refresh" id="btn_refresh" value="Stop">
-<label for="qsort">Sort:</label>
-<select id="qsort" name="qsort">
-  <option value="queue">queue</option>
-  <option value="server">server</option>
-  <option value="logsize">logsize</option>
-  <option value="total_items">total items</option>
-  <option value="expired_items">expired items</option>
-  <option value="items">items</option>
-  <option value="mem_items">items (mem)</option>
-  <option value="size">size</option>
-  <option value="mem_size">size (mem)</option>
-  <option value="age">age</option>
-  <option value="waiters">waiters</option>
-  <option value="open_transactions">open transactions</option>
-</select>
-<label for="qreverse">Reverse:</label>
-<select id="qreverse" name="qreverse">
-  <option value="0">No</option>
-  <option value="1">Yes</option>
-</select>
-<label for="qfilter">Filter:</label>
-<input type="text" id="qfilter" name="qfilter" value="">
-<span id="error">Error: <span id="error_count">0</span></span>
-<div id="content"></div>
+    <label for="refresh">Refresh:</label>
+    <input type="text" name="refresh" id="refresh" value="5">
+    <input type="button" name="btn_refresh" id="btn_refresh" value="Stop">
 
-<script id="tmpl_content" type="text/html">
-<div id="servers">
+    <label for="qsort">Sort:</label>
+    <select id="qsort" name="qsort">
+        <option value="queue">queue</option>
+        <option value="server">server</option>
+        <option value="logsize">logsize</option>
+        <option value="total_items">total items</option>
+        <option value="expired_items">expired items</option>
+        <option value="items">items</option>
+        <option value="mem_items">items (mem)</option>
+        <option value="size">size</option>
+        <option value="mem_size">size (mem)</option>
+        <option value="age">age</option>
+        <option value="waiters">waiters</option>
+        <option value="open_transactions">open transactions</option>
+    </select>
+
+    <label for="qreverse">Reverse:</label>
+    <select id="qreverse" name="qreverse">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+
+    <label for="qfilter">Filter:</label>
+    <input type="text" id="qfilter" name="qfilter" value="">
+
+    <span id="error">Error: <span id="error_count">0</span></span>
+
+    <div id="content">
+        <div id="servers_content"></div>
+        <div id="queues_content"></div>
+    </div>
+
+<script id="tmpl_servers" type="text/html">
   <table>
     <thead>
       <tr>
@@ -87,9 +94,9 @@
     {{/servers}}
     </tbody>
   </table>
-</div>
+</script>
 
-<div id="queues">
+<script id="tmpl_queues" type="text/html">
   <table>
     <thead>
       <tr>
@@ -128,7 +135,6 @@
       {{/queues}}
     </tbody>
   </table>
-</div>
 </script>
 
 <script src="/static/js/jquery.min.js" type="text/javascript"></script>

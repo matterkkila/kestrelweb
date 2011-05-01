@@ -8,11 +8,6 @@ import stats
 import util
 
 
-try:
-    import local_settings
-except ImportError:
-    pass
-
 App = dream.App()
 
 QUEUE_SORT = {
