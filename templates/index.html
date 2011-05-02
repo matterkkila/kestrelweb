@@ -78,17 +78,17 @@
       <td>{{version}}{{^version}}-{{/version}}</td>
       <td>{{uptime}}{{^uptime}}-{{/uptime}}</td>
       <td>{{time}}{{^time}}-{{/time}}</td>
-      <td>{{curr_connections}}</td>
-      <td>{{total_connections}}</td>
-      <td>{{curr_items}}</td>
-      <td>{{total_items}}</td>
-      <td>{{cmd_set}}</td>
-      <td>{{cmd_get}}</td>
-      <td>{{cmd_peek}}</td>
-      <td>{{get_hits}}</td>
-      <td>{{get_misses}}</td>
-      <td>{{bytes_read}}</td>
-      <td>{{bytes_written}}</td>
+      <td>{{#numeric}}{{curr_connections}}{{/numeric}}</td>
+      <td>{{#numeric}}{{total_connections}}{{/numeric}}</td>
+      <td>{{#numeric}}{{curr_items}}{{/numeric}}</td>
+      <td>{{#numeric}}{{total_items}}{{/numeric}}</td>
+      <td>{{#numeric}}{{cmd_set}}{{/numeric}}</td>
+      <td>{{#numeric}}{{cmd_get}}{{/numeric}}</td>
+      <td>{{#numeric}}{{cmd_peek}}{{/numeric}}</td>
+      <td>{{#numeric}}{{get_hits}}{{/numeric}}</td>
+      <td>{{#numeric}}{{get_misses}}{{/numeric}}</td>
+      <td>{{#size}}{{bytes_read}}{{/size}}</td>
+      <td>{{#size}}{{bytes_written}}{{/size}}</td>
       {{/stats}}
     </tr>
     {{/servers}}
@@ -120,16 +120,16 @@
       <tr id="{{server}}.{{queue}}" x-kestrel-server="{{server}}" x-kestrel-queue="{{queue}}">
         <td>{{queue}}</td>
         <td>{{server}}</td>
-        <td>{{logsize}}</td>
-        <td>{{total_items}}</td>
-        <td>{{expired_items}}</td>
-        <td>{{items}}</td>
-        <td>{{mem_items}}</td>
-        <td>{{bytes}}</td>
-        <td>{{mem_bytes}}</td>
-        <td>{{age}}</td>
-        <td>{{waiters}}</td>
-        <td>{{open_transactions}}</td>
+        <td>{{#size}}{{logsize}}{{/size}}</td>
+        <td>{{#numeric}}{{total_items}}{{/numeric}}</td>
+        <td>{{#numeric}}{{expired_items}}{{/numeric}}</td>
+        <td>{{#numeric}}{{items}}{{/numeric}}</td>
+        <td>{{#numeric}}{{mem_items}}{{/numeric}}</td>
+        <td>{{#size}}{{bytes}}{{/size}}</td>
+        <td>{{#size}}{{mem_bytes}}{{/size}}</td>
+        <td>{{#numeric}}{{age}}{{/numeric}}</td>
+        <td>{{#numeric}}{{waiters}}{{/numeric}}</td>
+        <td>{{#numeric}}{{open_transactions}}{{/numeric}}</td>
         <td><a href="" class="cmd" x-kestrel-action="flush">flush</a> | <a href="" class="cmd" x-kestrel-action="delete">delete</a></td>
       </tr>
       {{/queues}}

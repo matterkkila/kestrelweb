@@ -1,6 +1,21 @@
-var format_bytes = function(val_bytes) {
+var format_numeric = function(nStr, render) {
+    nStr = render(nStr);
+    var prefix = prefix || '';
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1))
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    return prefix + x1 + x2;
+};
+
+var format_bytes = function(val_bytes, render) {
     var new_val = 0;
     var suffix = '';
+
+    val_bytes = parseInt(render(val_bytes));
 
     if (val_bytes > 1073741824) {
         new_val = val_bytes / 1073741824;
@@ -30,8 +45,24 @@ var get_stats = function() {
             qfilter: $('#qfilter').val(),
         },
         success: function(data, textStatus, jqXHR) {
-            $('#servers_content').html(mustache.tmpl_servers({servers: data['servers']}));
-            $('#queues_content').html(mustache.tmpl_queues({queues: data['queues']}));
+            $('#servers_content').html(mustache.tmpl_servers({
+                'servers': data['servers'],
+                'size': function() {
+                    return format_bytes;
+                },
+                'numeric': function() {
+                    return format_numeric;
+                }
+            }));
+            $('#queues_content').html(mustache.tmpl_queues({
+                'queues': data['queues'],
+                'size': function() {
+                    return format_bytes;
+                },
+                'numeric': function() {
+                    return format_numeric;
+                }
+            }));
             $('#error_count').html(0);
         },
         error: function(jqXHR, textStatus, errorThrown) {
