@@ -5,23 +5,14 @@ import gevent
 import kestrel
 
 
-def flush(servers, queue):
-    def worker(server, queue):
-        return kestrel.Client(servers=[server], queue=queue).flush()
+def action(command, server_queues):
+    jobs = [
+        gevent.spawn(getattr(kestrel.Client(servers=[server], queue=queue), command))
+            for server, queue in server_queues
+    ]
+    gevent.joinall(jobs)
 
-    jobs = [gevent.spawn(worker, server, queue) for server in servers]
-
-    results = [job.value for job in jobs if job.value is not None]
-    return results
-
-def delete(servers, queue):
-    def worker(server, queue):
-        return kestrel.Client(servers=[server], queue=queue).delete()
-
-    jobs = [gevent.spawn(worker, server, queue) for server in servers]
-
-    results = [job.value for job in jobs if job.value is not None]
-    return results
+    return [job.value for job in jobs if job.value is not None]
 
 def get(servers):
     def worker(server):

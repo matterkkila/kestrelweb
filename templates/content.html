@@ -1,0 +1,34 @@
+<label for="refresh">Refresh:</label>
+<input type="text" name="refresh" id="refresh" value="5">
+<input type="button" name="btn_refresh" id="btn_refresh" value="Pause">
+
+<span id="error">Error: <span id="error_count">0</span></span>
+
+<div id="servers_content"></div>
+
+<label for="qsort">Sort:</label>
+<select id="qsort" name="qsort">
+    <option value="queue">queue</option>
+    <option value="server">server</option>
+    <option value="logsize">logsize</option>
+    <option value="total_items">total items</option>
+    <option value="expired_items">expired items</option>
+    <option value="items">items</option>
+    <option value="mem_items">items (mem)</option>
+    <option value="size">size</option>
+    <option value="mem_size">size (mem)</option>
+    <option value="age">age</option>
+    <option value="waiters">waiters</option>
+    <option value="open_transactions">open transactions</option>
+</select>
+
+<label for="qreverse">Reverse:</label>
+<select id="qreverse" name="qreverse">
+    <option value="0">No</option>
+    <option value="1">Yes</option>
+</select>
+
+<label for="qfilter">Filter:</label>
+<input type="text" id="qfilter" name="qfilter" value="">
+
+<div id="queues_content"></div>

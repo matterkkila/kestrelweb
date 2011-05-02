@@ -7,6 +7,11 @@ import dream
 import stats
 import util
 
+try:
+    import local_settings
+except:
+    import sys
+    sys.exit('Failed loading local_settings.py')
 
 App = dream.App()
 
@@ -88,22 +93,26 @@ def home(request):
 @App.expose('/ajax/action.json')
 def ajax_action(request):
     callback = request.str_params['callback'] if 'callback' in request.str_params else None
-    server = request.str_params['server'] if 'server' in request.str_params else None
-    queue = request.str_params['queue'] if 'queue' in request.str_params else None
     action = request.str_params['action'] if 'action' in request.str_params else None
+    server_queue = request.str_params.getall('server') if 'server' in request.str_params else []
 
-    data = {'success': True}
+    data = {}
+    status = 200
 
-    if action in ['flush', 'delete']:
-        if action == 'flush':
-            stats.flush([server], queue)
-        elif action == 'delete':
-            stats.delete([server], queue)
+    if len(server_queue) == 0:
+        data['error'] = 'Missing server or queue name'
+        status = 500
+    elif action in ['flush', 'delete', 'peek', 'flush_all', 'reload', 'shutdown']:
+        actions = []
+        for _sq in server_queue:
+            (server, queue) = _sq.split(',', 1) if _sq.count(',') else (_sq, None)
+            actions.append((server, queue))
+        data['results'] = stats.action(action, actions)
     else:
-        data['success'] = False
         data['error'] = 'Invalid action'
+        status = 500
 
-    return dream.JSONPResponse(callback=callback, body=data)
+    return dream.JSONResponse(callback=callback, body=data, status=status)
 
 
 @App.expose('/ajax/stats.json')
@@ -114,27 +123,46 @@ def ajax_stats(request):
     qreverse = int(request.str_params['qreverse']) if 'qreverse' in request.str_params else 0
     qfilter = request.str_params['qfilter'] if 'qfilter' in request.str_params else None
 
-    data = {}
+    response = {}
     if servers:
-        servers = servers.split(',')
-        _stats = stats.get(servers)
+        server_stats = dict([(server, None) for server in servers.split(',')])
+        queue_stats = []
 
-        if _stats is not None:
-            data = dict([
-                ('servers', []),
-                ('queues', [])
-            ])
+        stats_response = stats.get(server_stats.iterkeys())
+        if stats_response is not None:
+            for server, _data in stats_response.iteritems():
+                server_stats[server] = _data['server']
+                queue_stats.extend([
+                    dict(server=server, queue=queue, **qstats)
+                        for queue, qstats in _data['queues'].iteritems()
+                            if queue_filter(qfilter, queue, qstats)
+                ])
 
-            for server, _data in _stats.iteritems():
-                data['servers'].append({'server': server, 'stats': _data['server']})
-                data['queues'].extend([dict(server=server, queue=queue, **qstats) for queue, qstats in _data['queues'].iteritems() if queue_filter(qfilter, queue, qstats)])
+        response['servers'] = [
+            {'server': server, 'stats': _stats}
+                for server, _stats in server_stats.iteritems()
+        ]
+        response['servers'].sort(key=QUEUE_SORT['server'])
 
-            data['servers'].sort(cmp=lambda x,y: cmp(x['server'].lower(), y['server'].lower()))
-            data['queues'].sort(key=QUEUE_SORT['server'])
-            data['queues'].sort(key=QUEUE_SORT[qsort] if qsort in QUEUE_SORT else QUEUE_SORT['name'], reverse=qreverse)
+        response['queues'] = queue_stats
+        response['queues'].sort(key=QUEUE_SORT['server'])
+        response['queues'].sort(key=QUEUE_SORT[qsort] if qsort in QUEUE_SORT else QUEUE_SORT['name'], reverse=qreverse)
 
-    return dream.JSONPResponse(callback=callback, body=data)
+    return dream.JSONResponse(callback=callback, body=response)
 
+
+@App.expose('/ajax/config.json')
+def templates(request):
+    callback = request.str_params['callback'] if 'callback' in request.str_params else None
+
+    return dream.JSONResponse(callback=callback, body={
+        'servers': [{'server': server} for server in local_settings.servers],
+        'templates': {
+            'content': util.template('content.html'),
+            'servers': util.template('servers.html'),
+            'queues': util.template('queues.html'),
+        }
+    })
 
 @App.expose('/static/<filepath:.*>')
 def static(request, filepath):
