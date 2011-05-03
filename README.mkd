@@ -23,6 +23,7 @@ Prerequisites
 
  * Python 2.7+
  * virtualenv (not really required, but it's a good idea)
+ * libevent 1.4+ (for gevent)
 
 
 Installing
@@ -37,6 +38,11 @@ Installing
     pip install pykestrel
     pip install https://github.com/matterkkila/dream/tarball/master
     python ./setup.py develop
+
+
+Note: If libevent is installed in a non-standard location (I'm looking at you OS X and macports) you'll need to download the source distribution for gevent and install using something similar to:
+
+    python ./setup.py install --libevent /opt/local
 
 
 Configuring
