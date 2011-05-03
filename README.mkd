@@ -28,7 +28,7 @@ Prerequisites
 Installing
 ----------
 
-    git clone https://matterkkila@github.com/matterkkila/kestrelweb.git
+    git clone https://github.com/matterkkila/kestrelweb.git
     cd kestrelweb
     virtualenv --no-site-packages .
     . bin/activate
