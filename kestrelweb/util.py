@@ -75,7 +75,7 @@ def queue_filter(pattern, queue, qstats):
     return True
 
 def static(filepath):
-    return readfile('/static/%s' % filepath)
+    return readfile('/html/static/%s' % filepath)
 
 def template(filepath):
     return readfile('/templates/%s' % filepath)

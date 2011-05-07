@@ -1,7 +1,5 @@
 
 
-import re
-
 import dream
 
 import local_settings
