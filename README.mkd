@@ -10,10 +10,12 @@ https://github.com/matterkkila/kestrelweb
 
 Dependencies:
 
+ * decoroute - used by dream
+ * dream - https://github.com/matterkkila/dream
  * gevent
  * gunicorn
  * pykestrel
- * dream - https://github.com/matterkkila/dream
+ * webob - used by dream
 
 Note: All are available on pypi except for the dream library.
 
@@ -36,11 +38,12 @@ Installing
     pip install gevent
     pip install gunicorn
     pip install pykestrel
+    pip install webob
+    pip install decoroute
     pip install https://github.com/matterkkila/dream/tarball/master
     python ./setup.py develop
 
-
-Note: If libevent is installed in a non-standard location (I'm looking at you OS X and macports) you'll need to download the source distribution for gevent and install using something similar to:
+Note: If libevent is installed in a non-standard location (I'm looking at you macports) you'll need to download the source distribution for gevent and install using something similar to:
 
     python ./setup.py install --libevent /opt/local
 
@@ -48,15 +51,21 @@ Note: If libevent is installed in a non-standard location (I'm looking at you OS
 Configuring
 -----------
 
-Edit the templates/index.html and change the server input to point to your kestrel servers.
+Copy the local_settings.py.example to local_settings.py and edit the server list to reflect your queue servers.
 
-Format: server:port,server:port,...
+    cp local_settings.py.example local_settings.py
 
 
 Running
 -------
 
     gunicorn -k gevent -w 2 kestrelweb.main:App
+
+
+Deploying
+---------
+
+It's best to front gunicorn with something like nginx.  It is also best to use nginx to serve the static files used by kestrelweb.  Specifically anything in /static/* should be served by the proxy server.
 
 
 Filtering
@@ -67,7 +76,15 @@ You can filter the queue list on any field/value.  Strings only support the '=' 
 Examples:
 
  * queue=my_queue
- * queue=.*_prod$
+ * queue!=.*_prod$
  * server=10.0.10
  * total_items>=10
  * mem_items<=1024
+
+
+Feedback & Questions
+--------------------
+
+Any comments, questions, feel free to send me a message on github at https://github.com/matterkkila
+
+All patches and pull requests are welcome.
