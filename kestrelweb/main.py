@@ -8,76 +8,8 @@ import local_settings
 import kestrel_actions
 import util
 
+
 App = dream.App()
-
-QUEUE_SORT = {
-    'server': lambda x: x['server'].lower(),
-    'name': lambda x: x['queue'].lower(),
-    'items': lambda x: x['items'],
-    'bytes': lambda x: x['bytes'],
-    'total_items': lambda x: x['total_items'],
-    'logsize': lambda x: x['logsize'],
-    'expired_items': lambda x: x['expired_items'],
-    'mem_items': lambda x: x['mem_items'],
-    'mem_bytes': lambda x: x['mem_bytes'],
-    'age': lambda x: x['age'],
-    'discarded': lambda x: x['discarded'],
-    'waiters': lambda x: x['waiters'],
-    'open_transactions': lambda x: x['open_transactions'],
-}
-
-FILTER_COMP = {
-    '=': lambda x, y: x == y,
-    '>': lambda x, y: x > y,
-    '<': lambda x, y: x < y,
-    '>=': lambda x, y: x >= y,
-    '<=': lambda x, y: x <= y,
-    '!=': lambda x, y: x != y,
-}
-
-def queue_filter(pattern, queue, qstats):
-    """A filter to restrict queues"""
-    try:
-        if (pattern is not None) and isinstance(pattern, (str, unicode)) and (len(pattern) > 0):
-            _m = re.match('(.*?)(>=|<=|!=|=|<|>)(.*)', pattern)
-            if not _m:
-                return True
-
-            (field, comp, filter_value) = _m.groups()
-
-            value = None
-            if field == 'queue':
-                value = queue
-            elif field in qstats:
-                value = qstats[field]
-            else:
-                raise Exception('Unknown field')
-
-            if comp not in FILTER_COMP:
-                raise Exception('Unknown comparitor')
-
-            if isinstance(value, (int, long, float)):
-                if FILTER_COMP[comp](value, float(filter_value)):
-                    return True
-            elif isinstance(value, (str, unicode)):
-                if comp not in ['!=', '=']:
-                    raise Exception('Invalid comparitor')
-
-                qmatch = re.match(filter_value, value, re.I)
-                if qmatch and (comp == '='):
-                    return True
-                elif not qmatch and (comp == '!='):
-                    return True
-
-                return False
-            else:
-                raise Exception('Unknown type')
-
-            return False
-    except:
-        pass
-
-    return True
 
 
 @App.expose('/')
@@ -130,18 +62,18 @@ def ajax_stats(request):
                 queue_stats.extend([
                     dict(server=server, queue=queue, **qstats)
                         for queue, qstats in _data['queues'].iteritems()
-                            if queue_filter(qfilter, queue, qstats)
+                            if util.queue_filter(qfilter, queue, qstats)
                 ])
 
         response['servers'] = [
             {'server': server, 'stats': _stats}
                 for server, _stats in server_stats.iteritems()
         ]
-        response['servers'].sort(key=QUEUE_SORT['server'])
+        response['servers'].sort(key=util.QUEUE_SORT['server'])
 
         response['queues'] = queue_stats
-        response['queues'].sort(key=QUEUE_SORT['server'])
-        response['queues'].sort(key=QUEUE_SORT[qsort] if qsort in QUEUE_SORT else QUEUE_SORT['name'], reverse=qreverse)
+        response['queues'].sort(key=util.QUEUE_SORT['server'])
+        response['queues'].sort(key=util.QUEUE_SORT[qsort] if qsort in util.QUEUE_SORT else util.QUEUE_SORT['name'], reverse=qreverse)
 
     return dream.JSONResponse(callback=callback, body=response)
 
