@@ -14,7 +14,7 @@ def action(command, server_queues):
 
     return [job.value for job in jobs if job.value is not None]
 
-def get(servers):
+def stats(servers):
     def worker(server):
         return kestrel.Client(servers=[server], queue=None).stats()
 

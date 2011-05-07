@@ -4,14 +4,9 @@ import re
 
 import dream
 
-import stats
+import local_settings
+import kestrel_actions
 import util
-
-try:
-    import local_settings
-except:
-    import sys
-    sys.exit('Failed loading local_settings.py')
 
 App = dream.App()
 
@@ -107,7 +102,7 @@ def ajax_action(request):
         for _sq in server_queue:
             (server, queue) = _sq.split(',', 1) if _sq.count(',') else (_sq, None)
             actions.append((server, queue))
-        data['results'] = stats.action(action, actions)
+        data['results'] = kestrel_actions.action(action, actions)
     else:
         data['error'] = 'Invalid action'
         status = 500
@@ -128,7 +123,7 @@ def ajax_stats(request):
         server_stats = dict([(server, None) for server in servers.split(',')])
         queue_stats = []
 
-        stats_response = stats.get(server_stats.iterkeys())
+        stats_response = kestrel_actions.stats(server_stats.iterkeys())
         if stats_response is not None:
             for server, _data in stats_response.iteritems():
                 server_stats[server] = _data['server']

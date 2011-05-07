@@ -3,7 +3,7 @@ kestrelweb
 
 A kestrel web ui.
 
-Uses gunicorn + gevent for front end serving.  Also uses gevent to make async requests to the kestrel servers for stats.  It's still in early development so actual production deployment isn't supported yet.
+Uses gunicorn + gevent for front end serving.  Also uses gevent to make async requests to the kestrel servers for stats.  It's still in early development so any suggestions or ideas are welcome.
 
 https://github.com/matterkkila/kestrelweb
 
