@@ -102,6 +102,8 @@ def static(request, filepath):
             content_type = 'text/javascript'
         elif filepath.endswith('.html'):
             content_type = 'text/html'
+        elif filepath.endswith('.png'):
+            content_type = 'image/png'
     except:
         pass
 
