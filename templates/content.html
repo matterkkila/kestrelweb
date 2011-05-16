@@ -1,38 +1,36 @@
-
-    <header class="kw_section clearfix">
-        <h1>Kestrel Web</h1>
-        <form id="kw_sections">
-            <fieldset>
-                <label for="kw_foo_servers">
-                    <input type="checkbox" id="kw_foo_servers" checked />
-                    Servers
-                </label>
-                <label for="kw_foo_queues">
-                    <input type="checkbox" id="kw_foo_queues" checked />
-                    Queues
-                </label>
-            </fieldset>
-        </form>
-        <form id="kw_refresh">
-            <fieldset>
-                <button id="btn_refresh">Pause updates</button>
-            </fieldset>
-            <fieldset>
-                <label for="refresh">Refresh rate:</label>
-                <select name="refresh" id="refresh">
-                    <option value="5">5</option>
-                    <option value="5">15</option>
-                    <option value="5">30</option>
-                    <option value="5">60</option>
-                </select>
-                seconds
-            </fieldset>
-            <div>
-                <span id="error_count">0</span> errors
-            </div>
-        </form>
-    </header>
-
+<header class="kw_section clearfix">
+    <h1>Kestrel Web</h1>
+    <form id="kw_sections">
+        <fieldset>
+            <label for="kw_foo_servers">
+                <input type="checkbox" id="kw_foo_servers" checked="checked">
+                Servers
+            </label>
+            <label for="kw_foo_queues">
+                <input type="checkbox" id="kw_foo_queues" checked="checked"
+                Queues
+            </label>
+        </fieldset>
+    </form>
+    <form id="kw_refresh">
+        <fieldset>
+            <button id="btn_refresh">Pause updates</button>
+        </fieldset>
+        <fieldset>
+            <label for="refresh">Refresh rate:</label>
+            <select name="refresh" id="refresh">
+                <option value="5">5</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="60">60</option>
+            </select>
+            seconds
+        </fieldset>
+        <div>
+            <span id="error_count">0</span> errors
+        </div>
+    </form>
+</header>
 
 <section id="kw_servers" class="kw_section">
     <h2>Servers</h2>
@@ -43,10 +41,10 @@
         <th title="version string, like 1.2">version</th>
         <th title="seconds the server has been online">uptime</th>
         <th title="current time in unix epoch">time</th>
-        <th title="current open connections from clients">connections<br />current</th>
-        <th title="total connections that have been opened in this server's lifetime">connections<br />total</th>
-        <th title="total of items waiting in all queues">items<br />current</th>
-        <th title="total of items that have ever been added in this server's lifetime">items<br />total</th>
+        <th title="current open connections from clients">connections<br>current</th>
+        <th title="total connections that have been opened in this server's lifetime">connections<br>total</th>
+        <th title="total of items waiting in all queues">items<br>current</th>
+        <th title="total of items that have ever been added in this server's lifetime">items<br>total</th>
         <th title="total SET requests">set</th>
         <th title="total GET requests">get</th>
         <th title="total GET/peek requests">peek</th>
@@ -78,7 +76,7 @@
                 <option value="mem_size">size (mem)</option>
                 <option value="age">age</option>
                 <option value="waiters">waiters</option>
-                <option value="open_transactions">open<br />transactions</option>
+                <option value="open_transactions">open<br>transactions</option>
             </select>
             <label for="qreverse">Reverse:</label>
             <select id="qreverse" name="qreverse">
@@ -100,34 +98,34 @@
             <th class="server" title="the server">
                 <a class="sort" href="#">server<span></span></a>
             </th>
-            <th class="" title="byte size of the queue's journal file">
+            <th title="byte size of the queue's journal file">
                 <a class="sort" href="#">logsize<span></span></a>
             </th>
-            <th class="" title="total items that have been added to this queue in this server's lifetime">
-                <a class="sort" href="#">items<br />total<span></span></a>
+            <th title="total items that have been added to this queue in this server's lifetime">
+                <a class="sort" href="#">items<br>total<span></span></a>
             </th>
-            <th class="" title="total items that have been expired from this queue in this server's lifetime">
-                <a class="sort" href="#">items<br />expired<span></span></a>
+            <th title="total items that have been expired from this queue in this server's lifetime">
+                <a class="sort" href="#">items<br>expired<span></span></a>
             </th>
-            <th class="" title="items waiting in this queue">
-                <a class="sort" href="#">items<br />waiting<span></span></a>
+            <th title="items waiting in this queue">
+                <a class="sort" href="#">items<br>waiting<span></span></a>
             </th>
-            <th class="" title="items in this queue that are currently in memory">
-                <a class="sort" href="#">items<br />(mem)<span></span></a>
+            <th title="items in this queue that are currently in memory">
+                <a class="sort" href="#">items<br>(mem)<span></span></a>
             </th>
-            <th class="" title="total byte size of items waiting in this queue">
-                <a class="sort" href="#">size<br />total<span></span></a>
+            <th title="total byte size of items waiting in this queue">
+                <a class="sort" href="#">size<br>total<span></span></a>
             </th>
-            <th class="" title="total byte size of items in this queue that are currently in memory (will always be less than or equal to max_memory_size config for the queue)">
-                <a class="sort" href="#">size<br />(mem)<span></span></a>
+            <th title="total byte size of items in this queue that are currently in memory (will always be less than or equal to max_memory_size config for the queue)">
+                <a class="sort" href="#">size<br>(mem)<span></span></a>
             </th>
-            <th class="" title="time, in milliseconds, that the last item to be fetched from this queue had been waiting; that is, the time between SET and GET; if the queue is empty, this will always be zero">
+            <th title="time, in milliseconds, that the last item to be fetched from this queue had been waiting; that is, the time between SET and GET; if the queue is empty, this will always be zero">
                 <a class="sort" href="#">age<span></span></a>
             </th>
-            <th class="" title="number of clients waiting for an item from this queue (using GET/t)">
+            <th title="number of clients waiting for an item from this queue (using GET/t)">
                 <a class="sort" href="#">waiters<span></span></a>
             </th>
-            <th class="" title="items read with /open but not yet confirmed">
+            <th title="items read with /open but not yet confirmed">
                 <a class="sort" href="#">open trans<span></span></a>
             </th>
             <th class="actions"><!-- actions --></th>

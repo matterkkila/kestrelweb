@@ -107,9 +107,6 @@ header #kw_sections label {
     padding-left: 0;
     padding-right: 10px;
 }
-header #kw_sections input {
-/*    visibility:hidden;
-*/}
 #kw_refresh #refresh {
     display:inline-block;
     line-height:inherit;
@@ -186,7 +183,7 @@ header label {
     font-weight:bold;
     background-color:#c5cad9;
 }
-    
+
 .kw_table th span {
     display:none;
 }
@@ -225,7 +222,7 @@ header label {
 .kw_table tr:hover td:first-child {
     font-weight:bold;
 }
-.kw_table td:last-child, 
+.kw_table td:last-child,
 .kw_table tr:hover td:last-child {
     border-right:0;
     background-color:#fff !important;
@@ -257,7 +254,7 @@ th.actions {
     text-align:left;
     margin:8px 0 0 0;
     padding:0 10px 5px 5px;
-    
+
 }
 tr:hover .actions ul {
     visibility:visible;
@@ -368,10 +365,10 @@ border-left-color: rgba(25,25,25,0.92);
 padding: 4px 8px 5px 8px;
 background-color: rgba(45,45,45,0.88);
 }
-#tiptip_holder.tip_bottom #tiptip_arrow_inner { 
+#tiptip_holder.tip_bottom #tiptip_arrow_inner {
 border-bottom-color: rgba(45,45,45,0.88);
 }
-#tiptip_holder.tip_top #tiptip_arrow_inner { 
+#tiptip_holder.tip_top #tiptip_arrow_inner {
 border-top-color: rgba(20,20,20,0.92);
 }
 /* Custom TipTip */
