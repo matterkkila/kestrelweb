@@ -31,7 +31,7 @@ var format_bytes = function(val_bytes, render) {
         suffix = 'B';
     }
 
-    return  new_val.toFixed(2) + ' ' + suffix;
+    return  new_val.toFixed(2) + '&nbsp;<small>' + suffix + '</small>';
 };
 
 var get_stats = function() {
@@ -89,15 +89,23 @@ $(document).ready(function() {
         $('#servers_content').html(mustache.servers({'servers': data.servers}));
         get_stats();
         refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+        /* col header tooltips */
+        $('.kw_table th').tipTip({
+            defaultPosition: 'top',
+            delay: 1000       
+        });
     });
 
-    $('#btn_refresh').live('click', function () {
-        if ($(this).val() == 'Pause') {
+    $('#btn_refresh').live('click', function (e) {
+        e.preventDefault();
+        var button = $(this);
+        if (!button.hasClass('paused')) {
+            button.addClass('paused').html('Resume updates')
             clearInterval(refresh_int);
-            $(this).val('Paused');
-        } else if ($(this).val() == 'Paused') {
+        } else {
+            button.removeClass('paused').html('Pause updates');
+            get_stats();
             refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
-            $(this).val('Pause');
         }
     });
 
@@ -134,5 +142,45 @@ $(document).ready(function() {
             });
         }
         return false;
+    });
+    
+    /* sorting via col headers */
+    var currentSort = 0;
+    $('#kw_queues th a.sort').live('click',function(e) {
+        e.preventDefault();
+        var colHead         = $(this).closest('th');
+        var sortOptions     = $('#qsort option');
+        var reverseOptions  = $('#qreverse option');
+        var cols            = $('#kw_queues th a.sort');
+        var colIndex        = $.inArray(this,cols);
+        if (colIndex != currentSort) {
+            currentSort = colIndex;
+            $(sortOptions[colIndex]).attr('selected','selected').siblings().removeAttr('selected');
+            reverseOptions.removeAttr('selected');
+            $(reverseOptions[0]).attr('selected','selected');
+            colHead.addClass('current_sort').siblings().removeClass('current_sort').removeClass('reversed');
+        } else {
+            if($(reverseOptions[0]).attr('selected')) {
+                $(reverseOptions[0]).removeAttr('selected').siblings().attr('selected','selected');
+                colHead.addClass('reversed');
+            } else {
+                $(reverseOptions[1]).removeAttr('selected').siblings().attr('selected','selected');
+                colHead.removeClass('reversed');
+            }
+        }
+        get_stats();
+    });
+
+    /* toggle display of sections */
+    $('#kw_sections input[type="checkbox"]').live('change',function(e) {
+        var contentTriggers = $('#kw_sections input[type="checkbox"]');
+        var content         = $('section.kw_section').hide();
+        $.each(contentTriggers, function(k,v) {
+            var checkbox = $(v);
+            var foo  = $(content[k]);
+            if (v.checked) {
+                foo.show();
+            }
+        });
     });
 });

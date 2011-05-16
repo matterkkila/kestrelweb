@@ -1,38 +1,24 @@
-<table>
-<thead>
-  <tr>
-    <th title="the queue name">queue</th>
-    <th title="the server">server</th>
-    <th title="byte size of the queue's journal file">logsize</th>
-    <th title="total items that have been added to this queue in this server's lifetime">total items</th>
-    <th title="total items that have been expired from this queue in this server's lifetime">expired items</th>
-    <th title="items waiting in this queue">items</th>
-    <th title="items in this queue that are currently in memory">items (mem)</th>
-    <th title="total byte size of items waiting in this queue">size</th>
-    <th title="total byte size of items in this queue that are currently in memory (will always be less than or equal to max_memory_size config for the queue)">size (mem)</th>
-    <th title="time, in milliseconds, that the last item to be fetched from this queue had been waiting; that is, the time between SET and GET; if the queue is empty, this will always be zero">age</th>
-    <th title="number of clients waiting for an item from this queue (using GET/t)">waiters</th>
-    <th title="items read with /open but not yet confirmed">open transactions</th>
-    <th></th>
-  </tr>
-</thead>
-<tbody>
+
   {{#queues}}
   <tr id="{{server}}.{{queue}}" x-kestrel-server="{{server}}" x-kestrel-queue="{{queue}}">
-    <td>{{queue}}</td>
-    <td>{{server}}</td>
-    <td>{{#size}}{{logsize}}{{/size}}</td>
-    <td>{{#numeric}}{{total_items}}{{/numeric}}</td>
-    <td>{{#numeric}}{{expired_items}}{{/numeric}}</td>
-    <td>{{#numeric}}{{items}}{{/numeric}}</td>
-    <td>{{#numeric}}{{mem_items}}{{/numeric}}</td>
-    <td>{{#size}}{{bytes}}{{/size}}</td>
-    <td>{{#size}}{{mem_bytes}}{{/size}}</td>
-    <td>{{age}}</td>
-    <td>{{#numeric}}{{waiters}}{{/numeric}}</td>
-    <td>{{#numeric}}{{open_transactions}}{{/numeric}}</td>
-    <td><a href="" class="cmd" x-kestrel-action="peek" title="peek">p</a> | <a href="" class="cmd" x-kestrel-action="flush" title="flush">f</a> | <a href="" class="cmd" x-kestrel-action="delete" title="delete">d</a></td>
+    <td class="queue">{{queue}}</td>
+    <td class="server">{{server}}</td>
+    <td class="numeric">{{#size}}{{logsize}}{{/size}}</td>
+    <td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{expired_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{mem_items}}{{/numeric}}</td>
+    <td class="numeric">{{#size}}{{bytes}}{{/size}}</td>
+    <td class="numeric">{{#size}}{{mem_bytes}}{{/size}}</td>
+    <td class="numeric">{{age}}</td>
+    <td class="numeric">{{#numeric}}{{waiters}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{open_transactions}}{{/numeric}}</td>
+    <td class="actions">
+        <ul>
+            <li><a href="" class="cmd" x-kestrel-action="peek" title="peek">peek</a></li>
+            <li><a href="" class="cmd" x-kestrel-action="flush" title="flush">flush</a></li>
+            <li><a href="" class="cmd" x-kestrel-action="delete" title="delete">delete</a></li>
+        </ul>
+    </td>
   </tr>
   {{/queues}}
-</tbody>
-</table>
