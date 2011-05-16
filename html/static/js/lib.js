@@ -70,9 +70,11 @@ var get_stats = function() {
                 }
             }));
             $('#error_count').html(0);
+            $('#error_count').removeClass('error');
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $('#error_count').html(parseInt($('#error_count').html()) + 1);
+            $('#error_count').addClass('error');
         },
     });
 };
@@ -92,7 +94,7 @@ $(document).ready(function() {
         /* col header tooltips */
         $('.kw_table th').tipTip({
             defaultPosition: 'top',
-            delay: 1000       
+            delay: 1000
         });
     });
 
@@ -143,7 +145,7 @@ $(document).ready(function() {
         }
         return false;
     });
-    
+
     /* sorting via col headers */
     var currentSort = 0;
     $('#kw_queues th a.sort').live('click',function(e) {
