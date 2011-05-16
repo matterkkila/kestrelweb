@@ -1,44 +1,29 @@
-<table>
-<thead>
-  <tr>
-    <th title="the server host:port">server</th>
-    <th title="version string, like 1.2">version</th>
-    <th title="seconds the server has been online">uptime</th>
-    <th title="current time in unix epoch">time</th>
-    <th title="current open connections from clients">current connections</th>
-    <th title="total connections that have been opened in this server's lifetime">total connections</th>
-    <th title="total of items waiting in all queues">current items</th>
-    <th title="total of items that have ever been added in this server's lifetime">total items</th>
-    <th title="total SET requests">set</th>
-    <th title="total GET requests">get</th>
-    <th title="total GET/peek requests">peek</th>
-    <th title="total GET requests that received an item">hits</th>
-    <th title="total GET requests on an empty queue">misses</th>
-    <th title="total bytes read from clients">read</th>
-    <th title="total bytes written to clients">write</th>
-    <th></th>
-  </tr>
-</thead>
-<tbody>
+
 {{#servers}}
 <tr id="{{server}}" x-kestrel-server="{{server}}">
-  <td>{{server}}</td>
+  <td class="server">{{server}}</td>
   {{#stats}}
-  <td>{{version}}</td>
-  <td>{{uptime}}</td>
-  <td>{{time}}</td>
-  <td>{{#numeric}}{{curr_connections}}{{/numeric}}</td>
-  <td>{{#numeric}}{{total_connections}}{{/numeric}}</td>
-  <td>{{#numeric}}{{curr_items}}{{/numeric}}</td>
-  <td>{{#numeric}}{{total_items}}{{/numeric}}</td>
-  <td>{{#numeric}}{{cmd_set}}{{/numeric}}</td>
-  <td>{{#numeric}}{{cmd_get}}{{/numeric}}</td>
-  <td>{{#numeric}}{{cmd_peek}}{{/numeric}}</td>
-  <td>{{#numeric}}{{get_hits}}{{/numeric}}</td>
-  <td>{{#numeric}}{{get_misses}}{{/numeric}}</td>
-  <td>{{#size}}{{bytes_read}}{{/size}}</td>
-  <td>{{#size}}{{bytes_written}}{{/size}}</td>
-  <td><a href="" class="cmd" x-kestrel-action="flush_all" title="flush all">f</a> | <a href="" class="cmd" x-kestrel-action="reload" title="reload config">r</a> | <a href="" class="cmd" x-kestrel-action="shutdown" title="shutdown">s</a></td>
+  <td class="version">{{version}}</td>
+  <td class="numeric">{{uptime}}</td>
+  <td class="numeric">{{time}}</td>
+  <td class="numeric">{{#numeric}}{{curr_connections}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{total_connections}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{curr_items}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{cmd_set}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{cmd_get}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{cmd_peek}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{get_hits}}{{/numeric}}</td>
+  <td class="numeric">{{#numeric}}{{get_misses}}{{/numeric}}</td>
+  <td class="numeric">{{#size}}{{bytes_read}}{{/size}}</td>
+  <td class="numeric">{{#size}}{{bytes_written}}{{/size}}</td>
+  <td class="actions">
+      <ul>
+          <li><a href="" class="cmd" x-kestrel-action="flush_all" title="flush all">flush</a></li>
+          <li><a href="" class="cmd" x-kestrel-action="reload" title="reload config">reload</a></li>
+          <li><a href="" class="cmd" x-kestrel-action="shutdown" title="shutdown">shutdown</a></li>
+      </ul>
+  </td>
   {{/stats}}
   {{^stats}}
   <td>-</td>
@@ -59,5 +44,3 @@
   {{/stats}}
 </tr>
 {{/servers}}
-</tbody>
-</table>
