@@ -1,45 +1,43 @@
 {{#servers}}
 <tr id="{{server}}" x-kestrel-server="{{server}}">
-  <td class="server">{{server}}</td>
-  {{#stats}}
-  <td class="version">{{version}}</td>
-  <td class="numeric">{{uptime}}</td>
-  <td class="numeric">{{time}}</td>
-  <td class="numeric">{{#numeric}}{{curr_connections}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{total_connections}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{curr_items}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{cmd_set}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{cmd_get}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{cmd_peek}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{get_hits}}{{/numeric}}</td>
-  <td class="numeric">{{#numeric}}{{get_misses}}{{/numeric}}</td>
-  <td class="numeric">{{#size}}{{bytes_read}}{{/size}}</td>
-  <td class="numeric">{{#size}}{{bytes_written}}{{/size}}</td>
-  <td class="actions">
-      <ul>
-          <li><a href="" class="cmd" x-kestrel-action="flush_all" title="flush all">flush</a></li>
-          <li><a href="" class="cmd" x-kestrel-action="reload" title="reload config">reload</a></li>
-          <li><a href="" class="cmd" x-kestrel-action="shutdown" title="shutdown">shutdown</a></li>
-      </ul>
-  </td>
-  {{/stats}}
-  {{^stats}}
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  <td>-</td>
-  {{/stats}}
+    <td class="server">{{server}}</td>
+    {{#stats}}
+    <td class="version">{{version}}</td>
+    <td class="numeric">{{uptime}}</td>
+    <td class="numeric">{{time}}</td>
+    <td class="numeric">{{#numeric}}{{curr_connections}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{total_connections}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{curr_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{cmd_set}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{cmd_get}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{cmd_peek}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{get_hits}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{get_misses}}{{/numeric}}</td>
+    <td class="numeric">{{#size}}{{bytes_read}}{{/size}}</td>
+    <td class="numeric">{{#size}}{{bytes_written}}{{/size}}</td>
+    <td>
+        <a href="" class="cmd" x-kestrel-action="flush_all" title="flush all">flush</a>
+        <a href="" class="cmd" x-kestrel-action="reload" title="reload config">reload</a>
+        <a href="" class="cmd" x-kestrel-action="shutdown" title="shutdown">shutdown</a>
+    </td>
+    {{/stats}}
+    {{^stats}}
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    {{/stats}}
 </tr>
 {{/servers}}

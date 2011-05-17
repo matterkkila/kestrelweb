@@ -80,7 +80,6 @@ var get_stats = function() {
 };
 
 $(document).ready(function() {
-    //Load the mustache templates from the server
     var refresh_int = null;
 
     $.getJSON('/ajax/config.json', function (data) {
@@ -91,11 +90,13 @@ $(document).ready(function() {
         $('#servers_content').html(mustache.servers({'servers': data.servers}));
         get_stats();
         refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
-        /* col header tooltips */
-        $('.kw_table th').tipTip({
-            defaultPosition: 'top',
-            delay: 1000
-        });
+    });
+
+    $('#refresh').live('change', function(e) {
+        clearInterval(refresh_int);
+        if (!$('#btn_refresh').hasClass('paused')) {
+            refresh_int = setInterval(get_stats, parseInt($('#refresh').val()) * 1000);
+        }
     });
 
     $('#btn_refresh').live('click', function (e) {
@@ -136,9 +137,6 @@ $(document).ready(function() {
                     alert(data.results);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHT);
-                    console.log(textStats);
-                    console.log(errorThrown);
                     alert('An error occurred');
                 }
             });

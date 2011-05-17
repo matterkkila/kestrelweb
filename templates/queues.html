@@ -1,23 +1,21 @@
 {{#queues}}
 <tr id="{{server}}.{{queue}}" x-kestrel-server="{{server}}" x-kestrel-queue="{{queue}}">
-<td class="queue">{{queue}}</td>
-<td class="server">{{server}}</td>
-<td class="numeric">{{#size}}{{logsize}}{{/size}}</td>
-<td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
-<td class="numeric">{{#numeric}}{{expired_items}}{{/numeric}}</td>
-<td class="numeric">{{#numeric}}{{items}}{{/numeric}}</td>
-<td class="numeric">{{#numeric}}{{mem_items}}{{/numeric}}</td>
-<td class="numeric">{{#size}}{{bytes}}{{/size}}</td>
-<td class="numeric">{{#size}}{{mem_bytes}}{{/size}}</td>
-<td class="numeric">{{age}}</td>
-<td class="numeric">{{#numeric}}{{waiters}}{{/numeric}}</td>
-<td class="numeric">{{#numeric}}{{open_transactions}}{{/numeric}}</td>
-<td class="actions">
-    <ul>
-        <li><a href="" class="cmd" x-kestrel-action="peek" title="peek">peek</a></li>
-        <li><a href="" class="cmd" x-kestrel-action="flush" title="flush">flush</a></li>
-        <li><a href="" class="cmd" x-kestrel-action="delete" title="delete">delete</a></li>
-    </ul>
-</td>
+    <td class="queue">{{queue}}</td>
+    <td class="server">{{server}}</td>
+    <td class="numeric">{{#size}}{{logsize}}{{/size}}</td>
+    <td class="numeric">{{#numeric}}{{total_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{expired_items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{items}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{mem_items}}{{/numeric}}</td>
+    <td class="numeric">{{#size}}{{bytes}}{{/size}}</td>
+    <td class="numeric">{{#size}}{{mem_bytes}}{{/size}}</td>
+    <td class="numeric">{{age}}</td>
+    <td class="numeric">{{#numeric}}{{waiters}}{{/numeric}}</td>
+    <td class="numeric">{{#numeric}}{{open_transactions}}{{/numeric}}</td>
+    <td class="actions">
+        <a href="" class="cmd" x-kestrel-action="peek" title="peek">peek</a>
+        <a href="" class="cmd" x-kestrel-action="flush" title="flush">flush</a>
+        <a href="" class="cmd" x-kestrel-action="delete" title="delete">delete</a>
+    </td>
 </tr>
 {{/queues}}
