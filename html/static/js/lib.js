@@ -70,11 +70,11 @@ var get_stats = function() {
                 }
             }));
             $('#error_count').html(0);
-            $('#error_count').removeClass('error');
+            $('#errors').hide();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $('#error_count').html(parseInt($('#error_count').html()) + 1);
-            $('#error_count').addClass('error');
+            $('#errors').show().css('display', 'inline-block');
         },
     });
 };

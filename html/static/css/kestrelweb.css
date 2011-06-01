@@ -132,7 +132,10 @@ header label {
     border: 0;
     font-family: sans-serif,arial,helvetica !important;
 }
-#kw_refresh #error_count.error {
+#kw_refresh #errors {
+    display: none;
+}
+#kw_refresh #error_count {
     background-color: #e90000 !important;
     border: 0;
     margin: 0;
