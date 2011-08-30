@@ -13,7 +13,7 @@ setup(
     author_email='matt@matterkkila.com',
     url='http://github.com/matterkkila/kestrelweb',
     install_requires=[
-        'pykestrel>=0.0.5',
+        'pykestrel>=0.0.6',
         'dream',
         'gevent>=0.13.5',
         'gunicorn>=0.12.1'
