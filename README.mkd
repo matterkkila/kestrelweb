@@ -14,8 +14,8 @@ Dependencies:
  * dream - https://github.com/matterkkila/dream
  * gevent
  * gunicorn
- * pykestrel
- * webob - used by dream
+ * pykestrel <= 0.0.6
+ * webob <= 1.0.7
 
 Note: All are available on pypi except for the dream library.
 
