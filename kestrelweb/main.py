@@ -1,8 +1,9 @@
 
 
-import dream
+import logging.config
 
-import local_settings
+import local_settings; logging.config.fileConfig(local_settings.logging_config)
+import dream
 import kestrel_actions
 import util
 
@@ -17,9 +18,9 @@ def home(request):
 
 @App.expose('/ajax/action.json')
 def ajax_action(request):
-    callback = request.str_params['callback'] if 'callback' in request.str_params else None
-    action = request.str_params['action'] if 'action' in request.str_params else None
-    server_queue = request.str_params.getall('server') if 'server' in request.str_params else []
+    callback = request.params['callback'] if 'callback' in request.params else None
+    action = request.params['action'] if 'action' in request.params else None
+    server_queue = request.params.getall('server') if 'server' in request.params else []
 
     data = {}
     status = 200
@@ -31,7 +32,10 @@ def ajax_action(request):
         actions = []
         for _sq in server_queue:
             (server, queue) = _sq.split(',', 1) if _sq.count(',') else (_sq, None)
-            actions.append((server, queue))
+            if action in ['flush', 'delete', 'peek']:
+                actions.append((server, [queue]))
+            else:
+                actions.append((server, []))
         data['results'] = kestrel_actions.action(action, actions)
     else:
         data['error'] = 'Invalid action'
@@ -42,11 +46,11 @@ def ajax_action(request):
 
 @App.expose('/ajax/stats.json')
 def ajax_stats(request):
-    callback = request.str_params['callback'] if 'callback' in request.str_params else None
-    servers = request.str_params['servers'] if 'servers' in request.str_params else None
-    qsort = request.str_params['qsort'] if 'qsort' in request.str_params else None
-    qreverse = int(request.str_params['qreverse']) if 'qreverse' in request.str_params else 0
-    qfilter = request.str_params['qfilter'] if 'qfilter' in request.str_params else None
+    callback = request.params['callback'] if 'callback' in request.params else None
+    servers = request.params['servers'] if 'servers' in request.params else None
+    qsort = request.params['qsort'] if 'qsort' in request.params else None
+    qreverse = int(request.params['qreverse']) if 'qreverse' in request.params else 0
+    qfilter = request.params['qfilter'] if 'qfilter' in request.params else None
 
     response = {}
     if servers:
@@ -78,7 +82,7 @@ def ajax_stats(request):
 
 @App.expose('/ajax/config.json')
 def templates(request):
-    callback = request.str_params['callback'] if 'callback' in request.str_params else None
+    callback = request.params['callback'] if 'callback' in request.params else None
 
     return dream.JSONResponse(callback=callback, body={
         'servers': [{'server': server} for server in local_settings.servers],

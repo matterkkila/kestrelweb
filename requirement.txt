@@ -1,0 +1,5 @@
+WebOb==1.2b2
+gevent==0.13.6
+decoroute==0.8.1
+gunicorn==0.13.4
+pykestrel==0.5.1

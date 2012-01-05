@@ -5,10 +5,10 @@ import gevent
 import kestrel
 
 
-def action(command, server_queues):
+def action(command, server_params):
     jobs = [
-        gevent.spawn(getattr(kestrel.Client(servers=[server], queue=queue), command))
-            for server, queue in server_queues
+        gevent.spawn(getattr(kestrel.Client(servers=[server]), command), *params)
+            for server, params in server_params
     ]
     gevent.joinall(jobs)
 
@@ -16,7 +16,7 @@ def action(command, server_queues):
 
 def stats(servers):
     def worker(server):
-        return kestrel.Client(servers=[server], queue=None).stats()
+        return kestrel.Client(servers=[server]).stats()
 
     jobs = [gevent.spawn(worker, server) for server in servers]
     gevent.joinall(jobs)

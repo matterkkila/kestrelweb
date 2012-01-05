@@ -10,14 +10,11 @@ https://github.com/matterkkila/kestrelweb
 
 Dependencies:
 
- * decoroute - used by dream
- * dream - https://github.com/matterkkila/dream
- * gevent
- * gunicorn
- * pykestrel <= 0.0.6
- * webob <= 1.0.7
-
-Note: All are available on pypi except for the dream library.
+ * decoroute >= 0.8.1
+ * gevent >= 0.13.6
+ * gunicorn >= 0.13.4
+ * pykestrel >= 0.5.1
+ * webob >= 1.2b2
 
 
 Prerequisites
@@ -35,16 +32,13 @@ Installing
     cd kestrelweb
     virtualenv --no-site-packages .
     . bin/activate
-    pip install gevent
-    pip install gunicorn
-    pip install pykestrel
-    pip install webob
-    pip install decoroute
-    pip install https://github.com/matterkkila/dream/tarball/master
+    pip install -r requirement.txt
     python ./setup.py develop
 
 Note: If libevent is installed in a non-standard location (I'm looking at you macports) you'll need to download the source distribution for gevent and install using something similar to:
 
+    pip install --no-install gevent  #download only
+    cd build/gevent
     python ./setup.py install --libevent /opt/local
 
 
